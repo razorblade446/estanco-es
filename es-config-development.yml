@@ -1,0 +1,12 @@
+cluster.name: jusho-develop
+transport.host: 0.0.0.0
+network.host: 0.0.0.0
+http.host: 0.0.0.0
+
+discovery.type: single-node
+
+xpack.security.enabled: false
+xpack.monitoring.enabled: false
+bootstrap.memory_lock: true
+
+discovery.zen.minimum_master_nodes: 1
