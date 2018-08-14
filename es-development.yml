@@ -27,6 +27,8 @@ services:
   kibana:
     image: docker.elastic.co/kibana/kibana:5.6.10
     container_name: kibana1
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes: 
       - ./kb-config-development.yml:/usr/share/kibana/config/kibana.yml
     ports:
@@ -41,8 +43,28 @@ services:
     depends_on:
       - elasticsearch
 
+  logstash:
+    image: docker.elastic.co/logstash/logstash:5.6.10
+    container_name: logstash1
+    environment:
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    volumes:
+      - esdata1:/usr/share/logstash/data
+      - ./ls-config-development.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash-files/:/opt
+      - ./logstash-pipelines/:/usr/share/logstash/pipeline  
+    ports: 
+      - 5044:5044
+      - 9600:9600
+    networks:
+      - esnet
+    depends_on:
+      - elasticsearch
+
 volumes:
   esdata1:
+  lsdata1:
 
 networks: 
   esnet:
